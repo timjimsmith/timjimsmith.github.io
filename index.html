@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-12-12 Mon 21:19 -->
+<!-- 2016-12-12 Mon 21:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -232,34 +232,35 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf6d6417">1. "Functional" classloaders</a>
+<li><a href="#org7b6a739">1. "Functional" classloaders</a>
 <ul>
-<li><a href="#orgc532ab4">1.1. What's a classloader?</a></li>
-<li><a href="#org96290c8">1.2. When do classes get loaded?</a></li>
-<li><a href="#org97e8098">1.3. Mutable, but append-only</a></li>
-<li><a href="#org29310d9">1.4. What does that sound like?</a></li>
-<li><a href="#org9171e9b">1.5. URL Classloader</a></li>
-<li><a href="#orged3c248">1.6. Dependency collisions</a></li>
-<li><a href="#orgcfb8c37">1.7. Making things work</a></li>
-<li><a href="#org314c51f">1.8. Option 1: Make a new classloader with access to the JAR you want</a></li>
-<li><a href="#orga47d084">1.9. More on classlojure</a></li>
-<li><a href="#orgcb78c9e">1.10. Option 2: Make a new classloader and resolve dependencies with alembic</a></li>
-<li><a href="#orgc1c2d2b">1.11. More on alembic</a></li>
-<li><a href="#orgdc7305e">1.12. Option 3: Use boot pods to resolve dependencies with boot</a></li>
-<li><a href="#orgd14c1f5">1.13. More on boot pods</a></li>
-<li><a href="#org85b9256">1.14. Side-talk: how to avoid the "Major Version" problem as an API producer</a></li>
-<li><a href="#org44591ce">1.15. What if I want to redesign and make a new fresh API?</a></li>
-<li><a href="#org2064a9b">1.16. Won't that make my code huge?</a></li>
+<li><a href="#orgd7a8c18">1.1. What's a classloader?</a></li>
+<li><a href="#orgf41f235">1.2. When do classes get loaded?</a></li>
+<li><a href="#org950abba">1.3. Mutable, but append-only</a></li>
+<li><a href="#org88f92d6">1.4. What does that sound like?</a></li>
+<li><a href="#orgd3bae7a">1.5. URL Classloader</a></li>
+<li><a href="#orge006478">1.6. Dependency collisions</a></li>
+<li><a href="#org0f5b7b1">1.7. Making things work</a></li>
+<li><a href="#orgb3183dd">1.8. Option 1: Make a new classloader with access to the JAR you want</a></li>
+<li><a href="#org0903ffe">1.9. More on classlojure</a></li>
+<li><a href="#orgfe2891d">1.10. Option 2: Make a new classloader and resolve dependencies with alembic</a></li>
+<li><a href="#orgb737491">1.11. More on alembic</a></li>
+<li><a href="#org379493b">1.12. Option 3: Use boot pods to resolve dependencies with boot</a></li>
+<li><a href="#org73ff670">1.13. More on boot pods</a></li>
+<li><a href="#org7b76131">1.14. Side-talk: how to avoid the "Major Version" problem as an API producer</a></li>
+<li><a href="#org818eaee">1.15. What if I want to redesign and make a new fresh API?</a></li>
+<li><a href="#orgcee7ef2">1.16. Won't that make my code huge?</a></li>
+<li><a href="#orgdb69815">1.17. The end?</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf6d6417" class="outline-2">
-<h2 id="orgf6d6417"><span class="section-number-2">1</span> "Functional" classloaders</h2>
+<div id="outline-container-org7b6a739" class="outline-2">
+<h2 id="org7b6a739"><span class="section-number-2">1</span> "Functional" classloaders</h2>
 <div class="outline-text-2" id="text-1">
-</div><div id="outline-container-orgc532ab4" class="outline-3">
-<h3 id="orgc532ab4"><span class="section-number-3">1.1</span> What's a classloader?</h3>
+</div><div id="outline-container-orgd7a8c18" class="outline-3">
+<h3 id="orgd7a8c18"><span class="section-number-3">1.1</span> What's a classloader?</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>The Java Virtual Machine operates on Operating System-independent byte code
@@ -273,8 +274,8 @@ that they are available for use</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org96290c8" class="outline-3">
-<h3 id="org96290c8"><span class="section-number-3">1.2</span> When do classes get loaded?</h3>
+<div id="outline-container-orgf41f235" class="outline-3">
+<h3 id="orgf41f235"><span class="section-number-3">1.2</span> When do classes get loaded?</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Loaded when they are needed, whether for information (calling .class or any
@@ -284,8 +285,8 @@ packages, native libraries, and resources</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org97e8098" class="outline-3">
-<h3 id="org97e8098"><span class="section-number-3">1.3</span> Mutable, but append-only</h3>
+<div id="outline-container-org950abba" class="outline-3">
+<h3 id="org950abba"><span class="section-number-3">1.3</span> Mutable, but append-only</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>We can add classes to a classloader by loading them, but can't remove them</li>
@@ -295,8 +296,8 @@ old one and make the whole thing again without the thing you want to remove</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org29310d9" class="outline-3">
-<h3 id="org29310d9"><span class="section-number-3">1.4</span> What does that sound like?</h3>
+<div id="outline-container-org88f92d6" class="outline-3">
+<h3 id="org88f92d6"><span class="section-number-3">1.4</span> What does that sound like?</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li>Maybe we can build this in a composable way. Can we apply functional
@@ -306,8 +307,8 @@ perform very well</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org9171e9b" class="outline-3">
-<h3 id="org9171e9b"><span class="section-number-3">1.5</span> URL Classloader</h3>
+<div id="outline-container-orgd3bae7a" class="outline-3">
+<h3 id="orgd3bae7a"><span class="section-number-3">1.5</span> URL Classloader</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>Uses a list of JAR URLs, loads everything inside of them onto the classpath as
@@ -316,8 +317,8 @@ needed</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orged3c248" class="outline-3">
-<h3 id="orged3c248"><span class="section-number-3">1.6</span> Dependency collisions</h3>
+<div id="outline-container-orge006478" class="outline-3">
+<h3 id="orge006478"><span class="section-number-3">1.6</span> Dependency collisions</h3>
 <div class="outline-text-3" id="text-1-6">
 <ul class="org-ul">
 <li>At runtime, you need a context for the code you wrote to succeed, typically
@@ -330,8 +331,8 @@ version</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcfb8c37" class="outline-3">
-<h3 id="orgcfb8c37"><span class="section-number-3">1.7</span> Making things work</h3>
+<div id="outline-container-org0f5b7b1" class="outline-3">
+<h3 id="org0f5b7b1"><span class="section-number-3">1.7</span> Making things work</h3>
 <div class="outline-text-3" id="text-1-7">
 <ul class="org-ul">
 <li>Sometimes, you have to shim to make things work</li>
@@ -340,8 +341,8 @@ dependency?</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org314c51f" class="outline-3">
-<h3 id="org314c51f"><span class="section-number-3">1.8</span> Option 1: Make a new classloader with access to the JAR you want</h3>
+<div id="outline-container-orgb3183dd" class="outline-3">
+<h3 id="orgb3183dd"><span class="section-number-3">1.8</span> Option 1: Make a new classloader with access to the JAR you want</h3>
 <div class="outline-text-3" id="text-1-8">
 <ul class="org-ul">
 <li>Example with classlojure</li>
@@ -355,8 +356,8 @@ and the URLs of all dependencies of that JAR.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orga47d084" class="outline-3">
-<h3 id="orga47d084"><span class="section-number-3">1.9</span> More on classlojure</h3>
+<div id="outline-container-org0903ffe" class="outline-3">
+<h3 id="org0903ffe"><span class="section-number-3">1.9</span> More on classlojure</h3>
 <div class="outline-text-3" id="text-1-9">
 <ul class="org-ul">
 <li>Classlojure allows you to make a fresh classloader and give fresh dependencies</li>
@@ -365,8 +366,8 @@ and the URLs of all dependencies of that JAR.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcb78c9e" class="outline-3">
-<h3 id="orgcb78c9e"><span class="section-number-3">1.10</span> Option 2: Make a new classloader and resolve dependencies with alembic</h3>
+<div id="outline-container-orgfe2891d" class="outline-3">
+<h3 id="orgfe2891d"><span class="section-number-3">1.10</span> Option 2: Make a new classloader and resolve dependencies with alembic</h3>
 <div class="outline-text-3" id="text-1-10">
 <ul class="org-ul">
 <li>Example with alembic</li>
@@ -380,8 +381,8 @@ to find artifact dependencies in a repository</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc1c2d2b" class="outline-3">
-<h3 id="orgc1c2d2b"><span class="section-number-3">1.11</span> More on alembic</h3>
+<div id="outline-container-orgb737491" class="outline-3">
+<h3 id="orgb737491"><span class="section-number-3">1.11</span> More on alembic</h3>
 <div class="outline-text-3" id="text-1-11">
 <ul class="org-ul">
 <li>It's SOOOOO slow</li>
@@ -390,8 +391,8 @@ to find artifact dependencies in a repository</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgdc7305e" class="outline-3">
-<h3 id="orgdc7305e"><span class="section-number-3">1.12</span> Option 3: Use boot pods to resolve dependencies with boot</h3>
+<div id="outline-container-org379493b" class="outline-3">
+<h3 id="org379493b"><span class="section-number-3">1.12</span> Option 3: Use boot pods to resolve dependencies with boot</h3>
 <div class="outline-text-3" id="text-1-12">
 <ul class="org-ul">
 <li>Example with boot pods</li>
@@ -406,8 +407,8 @@ that it takes "forever" to get them up and running</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd14c1f5" class="outline-3">
-<h3 id="orgd14c1f5"><span class="section-number-3">1.13</span> More on boot pods</h3>
+<div id="outline-container-org73ff670" class="outline-3">
+<h3 id="org73ff670"><span class="section-number-3">1.13</span> More on boot pods</h3>
 <div class="outline-text-3" id="text-1-13">
 <ul class="org-ul">
 <li>Very nice if you have a boot app and know what dependencies you expect to need
@@ -417,8 +418,8 @@ dynamically</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org85b9256" class="outline-3">
-<h3 id="org85b9256"><span class="section-number-3">1.14</span> Side-talk: how to avoid the "Major Version" problem as an API producer</h3>
+<div id="outline-container-org7b76131" class="outline-3">
+<h3 id="org7b76131"><span class="section-number-3">1.14</span> Side-talk: how to avoid the "Major Version" problem as an API producer</h3>
 <div class="outline-text-3" id="text-1-14">
 <ul class="org-ul">
 <li>From Rich Hickey&#x2026;you know&#x2026;the Clojure guy</li>
@@ -442,8 +443,8 @@ API once you are out of the alpha phase
 </ul>
 </div>
 </div>
-<div id="outline-container-org44591ce" class="outline-3">
-<h3 id="org44591ce"><span class="section-number-3">1.15</span> What if I want to redesign and make a new fresh API?</h3>
+<div id="outline-container-org818eaee" class="outline-3">
+<h3 id="org818eaee"><span class="section-number-3">1.15</span> What if I want to redesign and make a new fresh API?</h3>
 <div class="outline-text-3" id="text-1-15">
 <ul class="org-ul">
 <li>If your function names are good, use a new namespace</li>
@@ -455,8 +456,8 @@ something NEW</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org2064a9b" class="outline-3">
-<h3 id="org2064a9b"><span class="section-number-3">1.16</span> Won't that make my code huge?</h3>
+<div id="outline-container-orgcee7ef2" class="outline-3">
+<h3 id="orgcee7ef2"><span class="section-number-3">1.16</span> Won't that make my code huge?</h3>
 <div class="outline-text-3" id="text-1-16">
 <ul class="org-ul">
 <li>Your code will grow and evolve over time</li>
@@ -464,11 +465,22 @@ something NEW</li>
 </ul>
 </div>
 </div>
+<div id="outline-container-orgdb69815" class="outline-3">
+<h3 id="orgdb69815"><span class="section-number-3">1.17</span> The end?</h3>
+<div class="outline-text-3" id="text-1-17">
+<ul class="org-ul">
+<li>classlojure: <a href="https://github.com/flatland/classlojure">https://github.com/flatland/classlojure</a></li>
+<li>alembic: <a href="https://github.com/pallet/alembic">https://github.com/pallet/alembic</a></li>
+<li>boot-clj: <a href="https://github.com/boot-clj/boot">https://github.com/boot-clj/boot</a></li>
+<li>Rich Hickey talk "Spec-ulation": <a href="https://www.youtube.com/watch?v=oyLBGkS5ICk">https://www.youtube.com/watch?v=oyLBGkS5ICk</a></li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: atop-laps</p>
-<p class="date">Created: 2016-12-12 Mon 21:19</p>
+<p class="author">Author: Tim Smith</p>
+<p class="date">Created: 2016-12-12 Mon 21:27</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
